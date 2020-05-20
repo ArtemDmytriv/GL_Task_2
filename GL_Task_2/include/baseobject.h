@@ -7,7 +7,7 @@ class BaseObject
 {
 public:
     BaseObject();
-    virtual std::string get() = 0;
+    virtual float getUsage() = 0;
     virtual void update() = 0;
     virtual ~BaseObject();
 };
