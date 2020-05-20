@@ -2,6 +2,11 @@
 #define WINUTILS_H
 
 #include "head.h"
+#include "UtilClass.h"
+
+int GB = 1073741824; // bits in GB;
+int MB = 1048576; // bits in MB;
+int KB = 1024 ; // bits in KB;
 
 #ifdef DEBUG
 inline void debug_msg(std::string str) { std::cout << str << '\n'; }
@@ -9,8 +14,9 @@ inline void debug_msg(std::string str) { std::cout << str << '\n'; }
 inline void debug_msg(std::string str) {}
 #endif //DEBUG
 
-class CPUCounter {
+class CPUCounter{
 public:
+    CPUCounter();
     float getUsage();
 private:
     unsigned long long FileTimeToInt64(const FILETIME & ft);
@@ -18,9 +24,20 @@ private:
     FILETIME idleTime, kernelTime, userTime;
 };
 
-class RAMCounter {
+class RAMCounter{
 public:
     RAMCounter();
+    float getUsage();
+    float getTotalMB();
+private:
+    MEMORYSTATUSEX memInfo;
+    DWORDLONG totalVirtualMem;
+};
+
+
+class VRAMCounter{
+public:
+    VRAMCounter();
     float getUsage();
     float getTotalMB();
 private:

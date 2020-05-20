@@ -22,7 +22,9 @@ double CPUCounter::CalculateCPULoad(unsigned long long idleTicks, unsigned long 
 }
 
 float CPUCounter::getUsage(){
-   return GetSystemTimes(&idleTime, &kernelTime, &userTime) ? CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime)) : -1.0f;
+   return GetSystemTimes(&idleTime, &kernelTime, &userTime) ?
+               CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime)) :
+               -1.0f;
 }
 
 RAMCounter::RAMCounter(){
@@ -32,10 +34,26 @@ RAMCounter::RAMCounter(){
 }
 
 float RAMCounter::getTotalMB(){
-    return memInfo.ullTotalPhys / 1048576;
+    return memInfo.ullTotalPhys / MB;
 }
 
 float RAMCounter::getUsage(){
     GlobalMemoryStatusEx(&memInfo);
-    return (memInfo.ullTotalPhys - memInfo.ullAvailPhys) / 1048576;
+    return (memInfo.ullTotalPhys - memInfo.ullAvailPhys) / MB;
 }
+
+VRAMCounter::VRAMCounter(){
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+    GlobalMemoryStatusEx(&memInfo);
+    totalVirtualMem = memInfo.ullTotalPageFile;
+}
+
+float VRAMCounter::getTotalMB(){
+    return memInfo.ullTotalPageFile / MB;
+}
+
+float VRAMCounter::getUsage(){
+    GlobalMemoryStatusEx(&memInfo);
+    return (memInfo.ullTotalPhys - memInfo.ullAvailPhys) / MB;
+}
+
