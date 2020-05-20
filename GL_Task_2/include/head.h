@@ -1,16 +1,7 @@
 #ifndef HEAD_H
 #define HEAD_H
 
-#ifdef _WIN32 /*Windows headers*/
-
-#include "windows.h"
-#include "WinUtils.h"
-
-#elif __linux__ /* Linux headers */
-
-#include "unistd.h"
-
-#endif
+#define DEBUG
 
 #include <iostream>
 #include <fstream>
@@ -18,5 +9,15 @@
 #include <algorithm>
 #include <vector>
 
+#ifdef _WIN32 /*Windows headers*/
+
+#include "windows.h"
+#include "include/winutils.h"
+
+#elif __linux__ /* Linux headers */
+
+#include "unistd.h"
+
+#endif
 
 #endif // HEAD_H
