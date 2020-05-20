@@ -2,7 +2,9 @@
 #define HEAD_H
 
 #ifdef _WIN32 /*Windows headers*/
+
 #include "windows.h"
+#include "WinUtils.h"
 
 #elif __linux__ /* Linux headers */
 

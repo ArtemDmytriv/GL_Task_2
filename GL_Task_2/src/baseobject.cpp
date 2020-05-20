@@ -1,9 +1,2 @@
-#include "baseobject.h"
+#include "include/baseobject.h"
 
-BaseObject::BaseObject()
-{
-}
-
-BaseObject::~BaseObject()
-{
-}
