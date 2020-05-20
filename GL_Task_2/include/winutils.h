@@ -2,9 +2,6 @@
 #define WINUTILS_H
 
 #include "head.h"
-#include "pdh.h"
-#include "TCHAR.h"
-
 
 #ifdef DEBUG
 inline void debug_msg(std::string str) { std::cout << str << '\n'; }
@@ -14,7 +11,6 @@ inline void debug_msg(std::string str) {}
 
 class CPUCounter {
 public:
-    // Provide actual CPU usage value in range
     float getUsage();
 private:
     unsigned long long FileTimeToInt64(const FILETIME & ft);
@@ -22,14 +18,15 @@ private:
     FILETIME idleTime, kernelTime, userTime;
 };
 
-
-class RamUsage;
-
-void getCPUinfo();
-
-void getGPUinfo();
-
-void getRAMinfo();
+class RAMCounter {
+public:
+    RAMCounter();
+    float getUsage();
+    float getTotalMB();
+private:
+    MEMORYSTATUSEX memInfo;
+    DWORDLONG totalVirtualMem;
+};
 
 
 #endif // WINUTILS_H
