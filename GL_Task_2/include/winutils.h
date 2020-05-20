@@ -2,7 +2,8 @@
 #define WINUTILS_H
 
 #include "head.h"
-
+#include "pdh.h"
+#include "TCHAR.h"
 
 
 #ifdef DEBUG
@@ -11,30 +12,16 @@ inline void debug_msg(std::string str) { std::cout << str << '\n'; }
 inline void debug_msg(std::string str) {}
 #endif //DEBUG
 
-class CpuUsage{
-private:
-    ULONGLONG SubtractTimes(const FILETIME& ftA, const FILETIME& ftB);
-    bool EnoughTimePassed();
-    inline bool IsFirstRun() const { return (m_dwLastRun == 0); }
-
-    //system total times
-    FILETIME m_ftPrevSysKernel;
-    FILETIME m_ftPrevSysUser;
-
-    //process times
-    FILETIME m_ftPrevProcKernel;
-    FILETIME m_ftPrevProcUser;
-
-    short m_nCpuUsage;
-    ULONGLONG m_dwLastRun;
-
-    volatile LONG m_lRunCount;
+class CPUCounter {
 public:
-    CpuUsage();
-    short getUsage();
+    // Provide actual CPU usage value in range
+    float getUsage();
+private:
+    unsigned long long FileTimeToInt64(const FILETIME & ft);
+    double CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks);
+    FILETIME idleTime, kernelTime, userTime;
 };
 
-class GpuUsage;
 
 class RamUsage;
 

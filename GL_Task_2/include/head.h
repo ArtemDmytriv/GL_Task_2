@@ -8,6 +8,8 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <thread>
+#include <memory>
 
 #ifdef _WIN32 /*Windows headers*/
 
