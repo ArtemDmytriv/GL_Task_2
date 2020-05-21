@@ -4,20 +4,13 @@
 #include "head.h"
 #include "UtilClass.h"
 
-int GB = 1073741824; // bits in GB;
-int MB = 1048576; // bits in MB;
-int KB = 1024 ; // bits in KB;
-
-#ifdef DEBUG
-inline void debug_msg(std::string str) { std::cout << str << '\n'; }
-#else
-inline void debug_msg(std::string str) {}
-#endif //DEBUG
+namespace win_impl {
 
 class CPUCounter{
 public:
     CPUCounter();
-    float getUsage();
+    double getUsage();
+    void* getCpuInfo();// WIN implementation of cpu info
 private:
     unsigned long long FileTimeToInt64(const FILETIME & ft);
     double CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks);
@@ -27,24 +20,21 @@ private:
 class RAMCounter{
 public:
     RAMCounter();
-    float getUsage();
-    float getTotalMB();
+    double getUsage();
+    double getVRamUsage();
+    double getTotalMB();
+    double getTotalVRamMB();
 private:
     MEMORYSTATUSEX memInfo;
+    DWORDLONG totalPhusMem;
     DWORDLONG totalVirtualMem;
 };
 
+class NetworkCounter{
 
-class VRAMCounter{
-public:
-    VRAMCounter();
-    float getUsage();
-    float getTotalMB();
-private:
-    MEMORYSTATUSEX memInfo;
-    DWORDLONG totalVirtualMem;
 };
 
+}
 
 #endif // WINUTILS_H
 
