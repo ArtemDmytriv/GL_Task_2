@@ -17,6 +17,11 @@ const long GB = 1073741824; // bits in GB;
 const int MB = 1048576; // bits in MB;
 const int KB = 1024 ; // bits in KB;
 
+namespace win_impl {}
+namespace linux_impl {}
+enum class hwType{ CPU, RAM, VRAM, NETW, GPU, NONE};
+
+
 // defines
 #define PAUSE 1000 /* miliseconds */
 
