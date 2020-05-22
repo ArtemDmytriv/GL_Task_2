@@ -10,11 +10,14 @@ class CPUCounter{
 public:
     CPUCounter();
     double getUsage();
-    void* getCpuInfo();// WIN implementation of cpu info
+    int getThreads();
+    std::string getArch();
+    std::string getProcName();
 private:
     unsigned long long FileTimeToInt64(const FILETIME & ft);
     double CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks);
     FILETIME idleTime, kernelTime, userTime;
+    SYSTEM_INFO winsysInfo;
 };
 
 class RAMCounter{
@@ -24,6 +27,9 @@ public:
     double getVRamUsage();
     double getTotalMB();
     double getTotalVRamMB();
+
+    MEMORYSTATUSEX getMemInfo() const;
+
 private:
     MEMORYSTATUSEX memInfo;
     DWORDLONG totalPhusMem;

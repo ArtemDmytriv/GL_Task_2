@@ -1,8 +1,14 @@
 #include "include/winutils.h"
+#include "intrin.h"
 
 namespace win_impl {
 
 // CPU IMPLEMENTATION
+
+CPUCounter::CPUCounter(){
+    GetSystemTimes(&idleTime, &kernelTime, &userTime);
+    GetSystemInfo(&winsysInfo);
+}
 
 unsigned long long CPUCounter::FileTimeToInt64(const FILETIME & ft){
     return (((unsigned long long)(ft.dwHighDateTime))<<32)|((unsigned long long)ft.dwLowDateTime);
@@ -31,6 +37,45 @@ double CPUCounter::getUsage(){
        return  -1.0;
 }
 
+int CPUCounter::getThreads(){
+    return winsysInfo.dwNumberOfProcessors;
+}
+
+std::string CPUCounter::getArch(){
+    switch (winsysInfo.wProcessorArchitecture){
+    case PROCESSOR_ARCHITECTURE_AMD64: return std::string("x64");
+    case PROCESSOR_ARCHITECTURE_ARM:   return std::string("ARM");
+    case PROCESSOR_ARCHITECTURE_INTEL: return std::string("x32");
+    case PROCESSOR_ARCHITECTURE_IA64:  return std::string("itanium");
+    default: return std::string("-");
+    }
+}
+
+std::string CPUCounter::getProcName(){
+    int CPUInfo[4] = {-1};
+    char CPUBrandString[0x40];
+    __cpuid(CPUInfo, 0x80000000);
+    unsigned int nExIds = CPUInfo[0];
+
+    memset(CPUBrandString, 0, sizeof(CPUBrandString));
+
+    // Get the information associated with each extended ID.
+    for (unsigned int i=0x80000000; i<=nExIds; ++i)
+    {
+        __cpuid(CPUInfo, i);
+        // Interpret CPU brand string.
+        if  (i == 0x80000002)
+            memcpy(CPUBrandString, CPUInfo, sizeof(CPUInfo));
+        else if  (i == 0x80000003)
+            memcpy(CPUBrandString + 16, CPUInfo, sizeof(CPUInfo));
+        else if  (i == 0x80000004)
+            memcpy(CPUBrandString + 32, CPUInfo, sizeof(CPUInfo));
+    }
+
+    return std::string(CPUBrandString);
+}
+
+
 // RAM IMPLEMENTATION
 
 RAMCounter::RAMCounter(){
@@ -53,6 +98,11 @@ double RAMCounter::getTotalVRamMB(){
     return totalVirtualMem / MB;
 }
 
+MEMORYSTATUSEX RAMCounter::getMemInfo() const
+{
+    return memInfo;
+}
+
 double RAMCounter::getVRamUsage(){
     GlobalMemoryStatusEx(&memInfo);
     return (totalVirtualMem - memInfo.ullAvailPageFile) / MB;
@@ -60,71 +110,5 @@ double RAMCounter::getVRamUsage(){
 
 // NETW IMPLEMENTATION
 
-using namespace std;
-
-#include "wbemcli.h"
-
-int NetworkCounter(){
-    IEnumWbemClassObject* pEnumerator = NULL;
-    hres = pSvc->ExecQuery(
-        bstr_t("WQL"),
-        bstr_t("SELECT * FROM Win32_PerfRawData_Tcpip_NetworkInterface"),
-        WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
-        NULL,
-        &pEnumerator);
-
-    if (FAILED(hres))
-    {
-        cout << "Query for operating system name failed."
-            << " Error code = 0x"
-            << hex << hres << endl;
-        pSvc->Release();
-        pLoc->Release();
-        CoUninitialize();
-        return 1;               // Program has failed.
-    }
-
-
-    // Get the data from the query
-    IWbemClassObject *pclsObj = NULL;
-    ULONG uReturn = 0;
-
-    while (pEnumerator)
-    {
-
-        HRESULT hr = pEnumerator->Next(WBEM_INFINITE, 1,
-            &pclsObj, &uReturn);
-
-        if (0 == uReturn)
-        {
-        break;
-        }
-
-
-        VARIANT vtProp;
-        VariantInit(&vtProp);
-
-        hr = pclsObj->Get(L"Name", 0, &vtProp, 0, 0);
-        wcout << " network adapter : " << vtProp.bstrVal << endl;
-        VariantClear(&vtProp);
-
-        hr = pclsObj->Get(L"BytesReceivedPerSec", 0, &vtProp, 0, 0);
-        wcout << " BytesReceivedPerSec  : " << vtProp.bstrVal << endl;
-        VariantClear(&vtProp);
-
-        hr = pclsObj->Get(L"BytesSentPerSec", 0, &vtProp, 0, 0);
-        wcout << " BytesSentPerSec  : " << vtProp.bstrVal << endl;
-        VariantClear(&vtProp);
-
-        hr = pclsObj->Get(L"Timestamp_Sys100NS", 0, &vtProp, 0, 0);
-        wcout << " Timestamp_Sys100NS  : " << vtProp.bstrVal << endl;
-        VariantClear(&vtProp);
-
-
-
-
-        pclsObj->Release();
-    }
 }
 
-}
