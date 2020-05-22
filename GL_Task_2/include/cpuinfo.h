@@ -7,10 +7,18 @@
 class CPUInfo : UtilClass{
 public:
     CPUInfo();
-    int getCores();
+    ~CPUInfo();
+    int getThreads();
+    std::string getArch() const;
+    std::string getCpuName() const;
+
+    double getUsage() override;
+    double getFull() override;
+
 private:
-    CPUCounter drv;
+    CPUCounter* drv;
     std::string arch;
+    std::string cpuName;
     int cores;
 };
 
