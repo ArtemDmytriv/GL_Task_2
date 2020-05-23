@@ -5,5 +5,5 @@ Window {
     visible: true
     width: 600
     height: 400
-    title: qsTr("Loadability monitor")
+    title: "Loadability monitor"
 }
