@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/UtilityModel.qml</file>
+        <file>qml/ChartModule.qml</file>
+        <file>qml/Background.qml</file>
     </qresource>
 </RCC>

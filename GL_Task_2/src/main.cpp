@@ -3,8 +3,8 @@
 #include "cpuinfo.h"
 #include "raminfo.h"
 
-
-#include <QGuiApplication>
+#include <QIcon>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 
 using namespace std;
@@ -12,7 +12,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
+    //app.setWindowIcon(QIcon("icon.png"));
     QQmlApplicationEngine engine;
 
 //    int i = 5;
