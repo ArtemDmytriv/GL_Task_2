@@ -18,10 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/UtilClass.cpp \
     src/cpuinfo.cpp \
-    src/linuxutils.cpp \
     src/main.cpp \
-    src/raminfo.cpp \
-    src/winutils.cpp
+    src/raminfo.cpp
 
 INCLUDEPATH += \
     include
@@ -36,6 +34,11 @@ HEADERS += \
 
 FORMS +=
 
+win32:{
+    SOURCES += src/winutils.cpp
+} else {
+    SOURCES += src/linuxutils.cpp
+}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
