@@ -6,17 +6,19 @@
 
 namespace linux_impl{
 
-class CPUCounter{
+class CPUCounter : UtilClass{
 public:
     CPUCounter();
     double getUsage();
-    void* getCpuInfo();
+    int getThreads();
+    std::string getArch() const;
+    std::string getProcName() const;
 private:
-
-
+    std::string arch;
+    std::string procname;
 };
 
-class RAMCounter{
+class RAMCounter : UtilClass{
 public:
     RAMCounter();
     double getUsage();
