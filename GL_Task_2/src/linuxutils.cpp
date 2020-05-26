@@ -53,15 +53,39 @@ double CPUCounter::getUsage(){
 }
 
 int CPUCounter::getThreads(){
-    return 99;
+    return sysconf( _SC_NPROCESSORS_ONLN );
 }
 
 std::string CPUCounter::getArch() const{
-    return "--";
+    std::ifstream fin ("/proc/cpuinfo");
+    std::string line, arch;
+    while (!fin.eof()){
+        getline(fin, line);
+        if (line.find("flags") != std::string::npos){
+
+            fin.close();
+            if(line.find("lm") != std::string::npos)
+                return "x64";
+            if(line.find("tm") != std::string::npos)
+                return "x32";
+            if(line.find("rm") != std::string::npos)
+                return "x16";
+        }
+    }
+    return "NaN";
 }
 
 std::string CPUCounter::getProcName() const{
-    return "???";
+    std::ifstream fin ("/proc/cpuinfo");
+    std::string line, arch;
+    size_t pos = 0;
+    while (!fin.eof()){
+        getline(fin, line);
+        if ( (pos = line.find("model name")) != std::string::npos){
+            return line.substr(line.find(':', pos) + 2, line.find('\n'));
+        }
+    }
+    return "NaN";
 }
 
 // RAM
@@ -99,6 +123,8 @@ double RAMCounter::getVRamUsage(){
     virtualMemUsed *= memInfo.mem_unit;
     return static_cast<double> (virtualMemUsed) / totalVirtualMem;
 }
+
+// NETWORK
 
 
 }
