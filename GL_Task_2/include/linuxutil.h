@@ -16,6 +16,8 @@ public:
     std::string getArch() const;
     std::string getProcName() const;
 private:
+    unsigned long long lastTotalUser, lastTotalUserLow; 
+    unsigned long long lastTotalSys, lastTotalIdle;
 
 };
 

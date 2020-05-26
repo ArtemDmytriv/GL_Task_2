@@ -5,11 +5,48 @@ namespace linux_impl{
 // CPU
 
 CPUCounter::CPUCounter(){
-
+    std::ifstream fin ("/proc/stat");
+    std::string temp;
+    fin >> temp >> lastTotalUser
+     >> lastTotalUserLow 
+     >> lastTotalSys 
+     >> lastTotalIdle;
+    
+    fin.close();
 }
 
 double CPUCounter::getUsage(){
-    return 0.4;
+    double usage;
+    unsigned long long totalUser, totalUserLow, totalSys, totalIdle, total;
+
+    std::ifstream fin ("/proc/stat");
+    std::string temp;
+    fin >> temp >> totalUser
+     >> totalUserLow 
+     >> totalSys 
+     >> totalIdle;
+    
+    fin.close();
+
+    if (totalUser < lastTotalUser || totalUserLow < lastTotalUserLow ||
+        totalSys < lastTotalSys || totalIdle < lastTotalIdle){
+        //Overflow detection. Just skip this value.
+        usage = -1.0;
+    }
+    else{
+        total = (totalUser - lastTotalUser) + (totalUserLow - lastTotalUserLow) +
+            (totalSys - lastTotalSys);
+        usage = total;
+        total += (totalIdle - lastTotalIdle);
+        usage /= total;
+    }
+
+    lastTotalUser = totalUser;
+    lastTotalUserLow = totalUserLow;
+    lastTotalSys = totalSys;
+    lastTotalIdle = totalIdle;
+
+    return usage;
 }
 
 int CPUCounter::getThreads(){
