@@ -107,7 +107,29 @@ double RAMCounter::getVRamUsage(){
     return (totalVirtualMem - memInfo.ullAvailPageFile) / MB;
 }
 
+NetworkCounter::NetworkCounter()
+{
+    lastMaximum = 50;
+}
+
+double NetworkCounter::getUsage()
+{
+    return 21.21;
+}
+
+double NetworkCounter::getSpeed()
+{
+    return 21.21;
+}
+
+double NetworkCounter::getLastMaximum()
+{
+    return lastMaximum;
+}
+
 // NETW IMPLEMENTATION
+
+
 
 }
 

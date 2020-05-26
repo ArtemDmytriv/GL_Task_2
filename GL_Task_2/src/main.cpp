@@ -2,6 +2,7 @@
 #include "UtilClass.h"
 #include "cpuinfo.h"
 #include "raminfo.h"
+#include "networkinfo.h"
 
 #include <QIcon>
 #include <QApplication>
@@ -26,10 +27,19 @@ int main(int argc, char *argv[])
 //    }
 
     CPUInfo * cpu = new CPUInfo;
+    RAMInfo * ram = new RAMInfo;
+    NetworkInfo * ntw = new NetworkInfo;
 
     cout << cpu->getThreads() << endl;
     cout << cpu->getArch() << endl;
     cout << cpu->getCpuName() << endl;
+    cout << endl;
+
+    cout << ram->getUsage() << endl;
+    cout << endl;
+
+    cout << ntw->getUsage() << endl;
+    cout << endl;
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

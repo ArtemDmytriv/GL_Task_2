@@ -11,6 +11,8 @@ public:
     double getUsage() override;
     double getFull() override;
 
+    double getSpeed();
+
     ~NetworkInfo();
 private:
     NetworkCounter *drv;

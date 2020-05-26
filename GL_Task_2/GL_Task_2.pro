@@ -19,6 +19,7 @@ SOURCES += \
     src/UtilClass.cpp \
     src/cpuinfo.cpp \
     src/main.cpp \
+    src/networkinfo.cpp \
     src/raminfo.cpp
 
 INCLUDEPATH += \
@@ -29,6 +30,7 @@ HEADERS += \
     include/cpuinfo.h \
     include/head.h \
     include/linuxutil.h \
+    include/networkinfo.h \
     include/raminfo.h \
     include/winutils.h
 
