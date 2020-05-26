@@ -16,6 +16,8 @@ public:
     std::string getArch() const;
     std::string getProcName() const;
 private:
+    unsigned long long lastTotalUser, lastTotalUserLow; 
+    unsigned long long lastTotalSys, lastTotalIdle;
 
 };
 
@@ -33,7 +35,13 @@ private:
 };
 
 class NetworkCounter{
-
+public:
+    NetworkCounter();
+    double getUsage();
+    double getSpeed();
+    double getLastMaximum();
+private:
+    double lastMaximum;
 };
 
 }
