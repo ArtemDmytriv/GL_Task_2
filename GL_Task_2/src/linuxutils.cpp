@@ -127,4 +127,26 @@ double RAMCounter::getVRamUsage(){
 // NETWORK
 
 
+double NetworkCounter::getSpeed(){
+    std::string interface = "eth0";
+    std::ifstream net_work_monitor(std::string("/sys/class/net/"  + interface + "/") );
+
+    if (net_work_monitor.good() == 1){
+        std::ifstream network_speed_check;
+        network_speed_check.open("/sys/class/net/" + interface + "/statistics/rx_bytes");
+        std::string output;
+        if (network_speed_check.is_open()) {
+            while (!network_speed_check.eof()) {
+                network_speed_check >> output;
+            }
+        }
+        net_work_monitor.close();
+        network_speed_check.close();
+
+        return std::stoi(output) / KB;
+    }
+    return 0;
+}
+
+
 }

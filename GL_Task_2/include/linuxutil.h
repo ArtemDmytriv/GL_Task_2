@@ -35,7 +35,13 @@ private:
 };
 
 class NetworkCounter{
-
+public:
+    NetworkCounter();
+    double getUsage();
+    double getSpeed();
+    double getLastMaximum();
+private:
+    double lastMaximum;
 };
 
 }
