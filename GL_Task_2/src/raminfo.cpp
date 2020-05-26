@@ -9,7 +9,7 @@ RAMInfo::RAMInfo() : UtilClass(hwType::RAM)
 
 
 double RAMInfo::getUsage(){
-    return  totalPhusMem * drv->getUsage();
+    return  drv->getUsage();
 }
 
 double RAMInfo::getFull(){
