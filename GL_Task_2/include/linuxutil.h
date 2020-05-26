@@ -2,11 +2,13 @@
 #define LINUXUTIL_H
 
 #include "head.h"
+#include "sys/types.h"
+#include "sys/sysinfo.h"
 #include "UtilClass.h"
 
 namespace linux_impl{
 
-class CPUCounter : UtilClass{
+class CPUCounter{
 public:
     CPUCounter();
     double getUsage();
@@ -14,11 +16,10 @@ public:
     std::string getArch() const;
     std::string getProcName() const;
 private:
-    std::string arch;
-    std::string procname;
+
 };
 
-class RAMCounter : UtilClass{
+class RAMCounter{
 public:
     RAMCounter();
     double getUsage();
@@ -26,7 +27,9 @@ public:
     double getTotalMB();
     double getTotalVRamMB();
 private:
-
+    struct sysinfo memInfo;
+    long long totalPhysMem;
+    long long totalVirtualMem;
 };
 
 class NetworkCounter{
