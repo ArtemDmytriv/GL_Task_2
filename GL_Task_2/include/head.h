@@ -28,6 +28,7 @@ enum class hwType{ CPU, RAM, VRAM, NETW, GPU, NONE};
 #ifdef _WIN32 /* Windows headers */
 
 #include "windows.h"
+#include "intrin.h"
 #include "include/winutils.h"
 using namespace win_impl;
 

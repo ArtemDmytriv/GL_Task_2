@@ -1,5 +1,4 @@
 #include "include/winutils.h"
-#include "intrin.h"
 
 namespace win_impl {
 

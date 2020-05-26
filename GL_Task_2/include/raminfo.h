@@ -14,8 +14,8 @@ public:
     ~RAMInfo();
 private:
     RAMCounter* drv;
-    int totalPhusMem;
-    int totalVirtualMem;
+    double totalPhusMem;
+    double totalVirtualMem;
 };
 
 #endif // RAMINFO_H
