@@ -4,7 +4,7 @@
 #include "head.h"
 
 
-class RAMInfo : UtilClass{
+class RAMInfo : public UtilClass{
 public:
     RAMInfo();
 
@@ -14,7 +14,7 @@ public:
     ~RAMInfo();
 private:
     RAMCounter* drv;
-    double totalPhusMem;
+    double totalPhysMem;
     double totalVirtualMem;
 };
 

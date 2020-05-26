@@ -3,7 +3,7 @@
 RAMInfo::RAMInfo() : UtilClass(hwType::RAM)
 {
     drv = new RAMCounter;
-    totalPhusMem = drv->getTotalMB();
+    totalPhysMem = drv->getTotalMB();
     totalVirtualMem = drv->getTotalVRamMB();
 }
 
@@ -13,7 +13,7 @@ double RAMInfo::getUsage(){
 }
 
 double RAMInfo::getFull(){
-    return  totalPhusMem;
+    return  totalPhysMem;
 }
 
 RAMInfo::~RAMInfo(){

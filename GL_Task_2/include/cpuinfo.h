@@ -4,7 +4,7 @@
 #include "head.h"
 #include "UtilClass.h"
 
-class CPUInfo : UtilClass{
+class CPUInfo : public UtilClass{
 public:
     CPUInfo();
     ~CPUInfo();
