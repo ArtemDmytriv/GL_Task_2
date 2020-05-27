@@ -1,6 +1,6 @@
 #include "AdapterUtil.h"
 
-AdapterUtil::AdapterUtil(QObject* pobj, UtilClass *mhw, int mtimer) :
+AdapterUtil::AdapterUtil(UtilClass *mhw, int mtimer, QObject* pobj) :
     QObject(pobj),
     hw(mhw),
     timer(mtimer)
