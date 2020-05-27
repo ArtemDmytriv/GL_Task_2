@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/AdapterUtil.cpp \
     src/UtilClass.cpp \
     src/cpuinfo.cpp \
     src/main.cpp \
@@ -26,19 +27,20 @@ INCLUDEPATH += \
     include
 
 HEADERS += \
+    include/AdapterUtil.h \
     include/UtilClass.h \
     include/cpuinfo.h \
     include/head.h \
-    include/linuxutil.h \
     include/networkinfo.h \
-    include/raminfo.h \
-    include/winutils.h
+    include/raminfo.h
 
 FORMS +=
 
 win32:{
+    HEADERS += include/winutils.h
     SOURCES += src/winutils.cpp
 } else {
+    HEADERS += include/linuxutil.h
     SOURCES += src/linuxutils.cpp
 }
 
