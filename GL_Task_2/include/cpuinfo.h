@@ -14,6 +14,7 @@ public:
 
     double getUsage() override;
     double getFull() override;
+    std::string getName() override;
 
 private:
     CPUCounter* drv;

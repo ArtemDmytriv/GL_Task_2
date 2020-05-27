@@ -25,6 +25,11 @@ double CPUInfo::getFull(){
     return 1.0;
 }
 
+std::string CPUInfo::getName()
+{
+    return drv->getProcName();
+}
+
 std::string CPUInfo::getArch() const{
     return arch;
 }

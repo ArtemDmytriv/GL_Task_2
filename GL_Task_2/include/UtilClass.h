@@ -19,6 +19,8 @@ public:
     virtual double getUsage() = 0;
     virtual double getFull() = 0;
 
+    virtual std::string getName() = 0;
+
     hwType getType() const;
 
 private:
