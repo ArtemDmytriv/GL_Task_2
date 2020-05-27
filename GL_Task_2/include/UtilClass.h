@@ -19,13 +19,16 @@ public:
     virtual double getUsage() = 0;
     virtual double getFull() = 0;
 
+    void update();
+    void init();
     virtual std::string getName() = 0;
 
     hwType getType() const;
 
 private:
     hwType type = hwType::NONE;
-
+    double maxval;
+    std::vector<double> data;
 };
 
 
