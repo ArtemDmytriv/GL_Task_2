@@ -21,3 +21,13 @@ hwType UtilClass::getType() const
 {
     return type;
 }
+
+std::vector<double> UtilClass::getData() const
+{
+    return data;
+}
+
+double UtilClass::getMax() const
+{
+    return maxval;
+}

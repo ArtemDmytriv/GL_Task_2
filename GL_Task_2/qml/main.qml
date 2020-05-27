@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
 
 Window {
     id: root
@@ -30,10 +31,28 @@ Window {
             id: header
             visible:  true
             Layout.preferredWidth: elements.width
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 70
             Rectangle {
                 color: "#F4EBD9"
                 anchors.fill: header
+            }
+            Row{
+                anchors.fill: header
+                anchors.margins: globalMargin
+
+                Button{
+                    property bool launched: true
+                    height: parent.height
+                    text: "pause"
+                    anchors.left: parent.left
+                    palette{
+                        button : "#BACCBC"
+                    }
+                    onClicked: {
+                        text : launched? "start" : "pause"
+                        launched : !launched
+                    }
+                }
             }
         }
 

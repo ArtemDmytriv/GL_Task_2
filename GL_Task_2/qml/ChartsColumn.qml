@@ -22,7 +22,9 @@ Item{
             anchors.fill : backgroundCharts
             anchors.margins: globalMargin
 
-            model: UtilModel {}
+            model: AdapterModel {
+                list: adapterList
+            }
             delegate: delegate
 
             ChartBlock{

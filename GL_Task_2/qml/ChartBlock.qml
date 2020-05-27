@@ -8,17 +8,20 @@ Component{
     id: delegate
     Rectangle {
         id: chartBlock
-        color: "#f1d59d"
+        color: "#fff6e2"
         width: grid.cellWidth - globalMargin
-        height: grid.cellHeight - globalMargin
-        border.color: "#c4a972"
+        height: grid.cellHeight - globalMargin * 2
+        border.color: Qt.darker("#fff6e2", 1.5)
         border.width: 2
 
         Text{
             anchors.left: parent.left
-            anchors.leftMargin: 10
-            text: name + ":"
-            font.pointSize: 10
+            anchors.leftMargin: globalMargin
+            text: name
+            font{
+                styleName: "Calibri"
+                pointSize: 10
+            }
         }
 
 

@@ -10,10 +10,10 @@
 
 //#include <QIcon>
 #include <QtCore>
-#include <QMetaObject>
 #include <QApplication>
 #include <QQmlComponent>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 using namespace std;
 
@@ -23,36 +23,34 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     //app.setWindowIcon(QIcon("icon.png"));
 
-    QQmlApplicationEngine engine;
+    qmlRegisterType<AdapterModel>("MyModel", 1, 0, "AdapterModel");
+    qmlRegisterUncreatableType<AdapterList>("MyModel", 1, 0, "AdapterList", "should not created");
 
-    /*
-    QQmlComponent comp(&engine, QUrl("qrc:/qml/main.qml"));
-    QObject * pobj = comp.create();
-    pobj->setProperty("visible", "true");
-    */
-
-    qmlRegisterType<AdapterModel>("MyModel", 1, 0, "UtilModel");
 
     UtilClass* ram = new RAMInfo;
+    UtilClass* vram = new RAMInfo(hwType::VRAM);
     UtilClass* cpu = new CPUInfo;
     UtilClass* netw = new NetworkInfo;
 
-    vector<UtilClass*> utils;
-    utils.push_back(ram);
-    utils.push_back(cpu);
-    utils.push_back(netw);
+    AdapterList adapterList;
+    adapterList.appendItem(ram);
+    adapterList.appendItem(vram);
+    adapterList.appendItem(cpu);
+    adapterList.appendItem(netw);
 
-    for(auto elem : utils){
-        cout << elem->getName() << endl;
-    }
+    //list.debugPrintData();
+    //    for(int i = 0; i < 5; i++){
+    //        Sleep(1000);
+    //        list.updateAllItems();
+    //    }
+    //list.debugPrintData();
 
-    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-                        if (!obj && url == objUrl)
-                            QCoreApplication::exit(-1);
-                    }, Qt::QueuedConnection);
-    engine.load(url);
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("adapterList", &adapterList);
+    engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+        if (engine.rootObjects().isEmpty())
+            return -1;
+
 
     return app.exec();
 }

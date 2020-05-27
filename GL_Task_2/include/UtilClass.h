@@ -24,7 +24,8 @@ public:
     virtual std::string getName() = 0;
 
     hwType getType() const;
-
+    std::vector<double> getData() const;
+    double getMax() const;
 private:
     hwType type = hwType::NONE;
     double maxval;

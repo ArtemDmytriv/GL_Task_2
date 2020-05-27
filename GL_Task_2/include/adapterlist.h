@@ -15,12 +15,17 @@ public:
 
     std::vector<UtilClass *> items() const;
     bool setItemAt(size_t index, UtilClass* item);
+    int getCount() const;
 
+    void debugPrintData() const;
 signals:
-    void updatedItem();
+    void itemAppended();
+    void itemUpdated();
 
 public slots:
-    void appendItem();
+    void appendItem(UtilClass *item);
+    void updateAllItems();
+    //void saveToFile(std::fstream fin);
 
 private:
     std::vector<UtilClass*> mItems;

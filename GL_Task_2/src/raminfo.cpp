@@ -20,7 +20,7 @@ double RAMInfo::getFull(){
 
 std::string RAMInfo::getName()
 {
-    return  ((type == hwType::RAM)? "RAM " : "VRAM")
+    return  ((type == hwType::RAM)? "RAM " : "VRAM ")
         + std::to_string(static_cast<int>((type == hwType::RAM)?totalPhysMem : totalVirtualMem))
         + " MB";
 }

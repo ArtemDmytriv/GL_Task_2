@@ -4,10 +4,12 @@
 #include "head.h"
 #include <QAbstractListModel>
 
+class AdapterList;
+
 class AdapterModel : public QAbstractListModel
 {
     Q_OBJECT
-
+    Q_PROPERTY(AdapterList *list READ list WRITE setList);
 public:
     explicit AdapterModel(QObject *parent = nullptr);
 
@@ -15,6 +17,7 @@ public:
         NameRole = Qt::UserRole,
         DataRole
     };
+
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
@@ -28,7 +31,10 @@ public:
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    AdapterList *list() const;
+    void setList(AdapterList *list);
 private:
+    AdapterList * mList;
 };
 
 #endif // ADAPTERMODEL_H
