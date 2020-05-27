@@ -16,6 +16,11 @@ double NetworkInfo::getFull()
     return drv->getLastMaximum();
 }
 
+std::string NetworkInfo::getName()
+{
+    return "Ethernet";
+}
+
 double NetworkInfo::getSpeed()
 {
     return drv->getSpeed();
