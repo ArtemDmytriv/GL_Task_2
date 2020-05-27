@@ -11,27 +11,24 @@ Item{
         anchors.fill : chartsItem
         color: "#F4EBD9"
 
-        Grid{
+        GridView{
             id: grid
-            rows: 2
-            columns: 2
+            cellWidth: backroundCharts.width / 2 - globalMargin
+            cellHeight: backroundCharts.height / 2
+
             anchors.fill : backroundCharts
             anchors.margins: globalMargin
-            spacing: globalMargin
 
-            ChartBlock {
-                id: chartBlock11
-            }
-            ChartBlock {
-                id: chartBlock12
-            }
-            ChartBlock {
-                id: chartBlock21
-            }
-            ChartBlock {
-                id: chartBlock22
+            model: model
+            delegate: delegate
+
+            ChartBlock{
+                id: delegate
             }
 
+            UtilityModel {
+                id: model
+            }
         }
     }
 }
