@@ -2,19 +2,11 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 
+
 ListModel{
-    ListElement{
-        name: "CPU"
-        data: []
-    }
+    id: model
+    objectName: "model"
 
-    ListElement{
-        name: "GPU"
-        data: []
-    }
 
-    ListElement{
-        name: "RAM"
-        data: []
-    }
+
 }

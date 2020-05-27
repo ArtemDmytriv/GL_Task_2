@@ -4,11 +4,15 @@
 #include "raminfo.h"
 #include "networkinfo.h"
 
-#include "AdapterUtil.h"
+#include "adaptermodel.h"
+#include "adapterlist.h"
 #include "UtilClass.h"
 
-#include <QIcon>
+//#include <QIcon>
+#include <QtCore>
+#include <QMetaObject>
 #include <QApplication>
+#include <QQmlComponent>
 #include <QQmlApplicationEngine>
 
 using namespace std;
@@ -18,16 +22,25 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
     //app.setWindowIcon(QIcon("icon.png"));
+
     QQmlApplicationEngine engine;
+
+    /*
+    QQmlComponent comp(&engine, QUrl("qrc:/qml/main.qml"));
+    QObject * pobj = comp.create();
+    pobj->setProperty("visible", "true");
+    */
+
+    qmlRegisterType<AdapterModel>("MyModel", 1, 0, "UtilModel");
 
     UtilClass* ram = new RAMInfo;
     UtilClass* cpu = new CPUInfo;
     UtilClass* netw = new NetworkInfo;
 
-    vector<AdapterUtil*> utils;
-    utils.push_back( new AdapterUtil(0, cpu, TIME) );
-    utils.push_back( new AdapterUtil(0, ram, TIME) );
-    utils.push_back( new AdapterUtil(0, netw, TIME) );
+    vector<UtilClass*> utils;
+    utils.push_back(ram);
+    utils.push_back(cpu);
+    utils.push_back(netw);
 
     for(auto elem : utils){
         cout << elem->getName() << endl;

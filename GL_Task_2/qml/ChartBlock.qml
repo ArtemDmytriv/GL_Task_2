@@ -3,6 +3,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
 
+
 Component{
     id: delegate
     Rectangle {
@@ -19,6 +20,9 @@ Component{
             text: name + ":"
             font.pointSize: 10
         }
+
+
+
     //    ChartView{
     //        antialiasing: true
     //        width: grid.width / 2 - globalMargin

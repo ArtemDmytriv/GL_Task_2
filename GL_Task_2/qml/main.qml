@@ -19,6 +19,7 @@ Window {
 
     ColumnLayout {
         id: elements
+        objectName: "elementsObj"
         anchors.fill: parent
         anchors.margins: 2 * globalMargin
         //anchors.verticalCenterOffset: 100
@@ -49,6 +50,7 @@ Window {
 
         ChartsColumn {
             id: chartsItem
+            objectName: "chartsItemObj"
             Layout.preferredWidth: parent.width
             Layout.fillHeight: true
         }

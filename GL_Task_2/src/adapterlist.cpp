@@ -1,7 +1,7 @@
 #include "adapterlist.h"
 
-AdapterList::AdapterList(int count = 4, QObject* pobj = 0) :
-    QObject(pobj)
+AdapterList::AdapterList(int count, QObject* parent) :
+    QObject(parent)
 {
     mItems.resize(count);
 }
@@ -17,5 +17,6 @@ bool AdapterList::setItemAt(size_t index, UtilClass *item)
         return false;
 
     mItems[index] = item;
+    return true;
 }
 

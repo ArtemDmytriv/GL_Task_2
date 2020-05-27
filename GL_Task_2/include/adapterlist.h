@@ -11,7 +11,7 @@ class AdapterList : public QObject {
     Q_OBJECT
 public:
 
-    explicit AdapterList(QObject *parant = nullptr);
+    explicit AdapterList(int count = 0, QObject *parent = 0);
 
     std::vector<UtilClass *> items() const;
     bool setItemAt(size_t index, UtilClass* item);
