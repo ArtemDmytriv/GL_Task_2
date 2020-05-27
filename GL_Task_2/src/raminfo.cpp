@@ -1,6 +1,8 @@
 #include "raminfo.h"
 
-RAMInfo::RAMInfo() : UtilClass(hwType::RAM)
+RAMInfo::RAMInfo(hwType t) :
+    UtilClass(t),
+    type(t)
 {
     drv = new RAMCounter;
     totalPhysMem = drv->getTotalMB();
@@ -9,11 +11,18 @@ RAMInfo::RAMInfo() : UtilClass(hwType::RAM)
 
 
 double RAMInfo::getUsage(){
-    return  drv->getUsage();
+    return  (type == hwType::RAM)? drv->getUsage() : drv->getVRamUsage();
 }
 
 double RAMInfo::getFull(){
-    return  totalPhysMem;
+    return  (type == hwType::RAM)? totalPhysMem : totalVirtualMem;
+}
+
+std::string RAMInfo::getName()
+{
+    return  ((type == hwType::RAM)? "RAM " : "VRAM")
+        + std::to_string(static_cast<int>((type == hwType::RAM)?totalPhysMem : totalVirtualMem))
+        + " MB";
 }
 
 RAMInfo::~RAMInfo(){
