@@ -1,8 +1,11 @@
 #include "include/head.h"
-#include "UtilClass.h"
+
 #include "cpuinfo.h"
 #include "raminfo.h"
 #include "networkinfo.h"
+
+#include "AdapterUtil.h"
+#include "UtilClass.h"
 
 #include <QIcon>
 #include <QApplication>
@@ -17,29 +20,18 @@ int main(int argc, char *argv[])
     //app.setWindowIcon(QIcon("icon.png"));
     QQmlApplicationEngine engine;
 
-//    int i = 5;
-//    cout << "RAM total\t" << ram.getTotalMB() << endl;
+    UtilClass* ram = new RAMInfo;
+    UtilClass* cpu = new CPUInfo;
+    UtilClass* netw = new NetworkInfo;
 
-//    while (i--){
-//        cout << "CPU: "<< cpu.getUsage() << endl;
-//        cout << "RAM: "<< ram.getUsage() << endl;
-//        Sleep(1000);
-//    }
+    vector<AdapterUtil*> utils;
+    utils.push_back( new AdapterUtil(0, cpu, TIME) );
+    utils.push_back( new AdapterUtil(0, ram, TIME) );
+    utils.push_back( new AdapterUtil(0, netw, TIME) );
 
-    CPUInfo * cpu = new CPUInfo;
-    RAMInfo * ram = new RAMInfo;
-    NetworkInfo * ntw = new NetworkInfo;
-
-    cout << cpu->getThreads() << endl;
-    cout << cpu->getArch() << endl;
-    cout << cpu->getCpuName() << endl;
-    cout << endl;
-
-    cout << ram->getUsage() << endl;
-    cout << endl;
-
-    cout << ntw->getUsage() << endl;
-    cout << endl;
+    for(auto elem : utils){
+        cout << elem->getName() << endl;
+    }
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
