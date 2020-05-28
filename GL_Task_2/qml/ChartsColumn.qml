@@ -7,11 +7,13 @@ import MyModel 1.0
 Item{
     id: chartsItem
 
+
     Rectangle{
         id: backgroundCharts
         objectName: "backgroundChartsObj"
         anchors.fill : chartsItem
         color: "#F4EBD9"
+
 
         GridView{
             signal updateGraphs
@@ -26,13 +28,84 @@ Item{
             anchors.margins: globalMargin
             clip: true
 
-            model: AdapterModel {
-                onDataUpdated: console.log("Signal \"Data was updated\" recieved")
+            model: model
+
+            AdapterModel {
+                id: model
                 list: adapterList
             }
 
-            delegate: ChartBlock {
+            delegate: delegate
+
+
+            Component{
                 id: delegate
+                Rectangle {
+
+                    id: chartBlock
+                    color: "#fff6e2"
+                    width: grid.cellWidth - globalMargin
+                    height: grid.cellHeight - globalMargin * 2
+                    border.color: Qt.darker("#fff6e2", 1.5)
+                    border.width: 2
+
+                    Text{
+                        anchors.left: parent.left
+                        anchors.leftMargin: globalMargin
+                        text: model.name
+                        font{
+                            styleName: "Calibri"
+                            pointSize: 10
+                        }
+                        z: 2
+                    }
+
+                    ChartView{
+
+                        id: chartView
+                        antialiasing: true
+                        width: chartBlock.width
+                        height: chartBlock.height
+
+                        Connections {
+                            target: adapterList
+                            onItemUpdated: {
+                               console.log("In Decorator" + model.data.size.toFixe)
+
+                               for (var i = 0; i < model.data.size; ++i)
+                                    chartView.append(model.data[i]);
+
+                               axisX.min = 0;
+                               axisX.max = 5;
+
+                               axisY.min = 0;
+                               axisY.max = 5;
+                            }
+                        }
+
+                        LineSeries{
+                            id: lineSeries
+                        }
+
+
+                        ValueAxis {
+                            id: axisY
+                            gridVisible: true
+                            tickCount: 5
+                            min: 0
+                            max: 1
+                        }
+
+                        ValueAxis {
+                            id: axisX
+                            min: 0
+                            max: 1
+                            gridVisible: true
+                            tickCount: 5
+                        }
+                    }
+
+                }
             }
 
         }

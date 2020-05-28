@@ -27,8 +27,12 @@ QVariant AdapterModel::data(const QModelIndex &index, int role) const
 
     UtilClass* item = mList->items().at(index.row());
 
+    QList<double> values;
+    auto vec = item->getData();
+    values.reserve(vec.size());
+    std::copy(vec.begin(), vec.end(), std::back_inserter(values));
     QVariant var;
-    var.setValue(item->getData());
+    var.setValue(values);
 
     switch (role) {
         case NameRole:

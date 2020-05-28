@@ -18,6 +18,7 @@ Window {
         id: background
     }
 
+
     ColumnLayout {
         id: elements
         objectName: "elementsObj"

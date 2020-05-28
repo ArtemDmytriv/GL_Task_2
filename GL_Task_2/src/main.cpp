@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("adapterList", &adapterList);
-
     //list.debugPrintData();
     //    for(int i = 0; i < 5; i++){
     //        Sleep(1000);
