@@ -35,7 +35,7 @@ public:
     AdapterList *list() const;
     void setList(AdapterList *list);
 
-    Q_INVOKABLE void saveToFile(QVariant path);
+    Q_INVOKABLE void saveToFile(QVariant time, QVariant kinds, QVariant path);
 
 private:
     AdapterList * mList;

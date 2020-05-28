@@ -36,7 +36,7 @@ Window {
 
         function saveProc(){
             console.log("In save func");
-            my_model.saveToFile("");
+            my_model.saveToFile(curTime, saveStates,"");
         }
 
         Item {

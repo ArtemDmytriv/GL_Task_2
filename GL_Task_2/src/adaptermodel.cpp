@@ -96,18 +96,30 @@ AdapterList *AdapterModel::list() const
     return mList;
 }
 
-void AdapterModel::saveToFile(QVariant savepath)
+void AdapterModel::saveToFile(QVariant time, QVariant kinds, QVariant savepath = "")
 {
+    int t = time.toInt();
+    int k = kinds.toInt();
+
     std::cout << "start Save file\n";
     std::string path = savepath.toString().toStdString();
 
     std::ofstream fout(path + "data.txt");
-    fout << "CPU,RAM,VRAM,NETW\n";
+    if (k & 1)
+        fout << "CPU,";
+    if (k & 2)
+        fout << "RAM,";
+    if (k & 4)
+        fout << "VRAM,";
+    if (k & 8)
+        fout << "NETW,";
+    fout << "\n";
     std::vector<UtilClass*> lst = mList->items();
 
     for (size_t i = 0; i < lst[0]->getData().size(); ++i){
-        for (size_t j = 0; j < lst.size(); ++j, fout << ','){
-            fout << lst[j]->getData()[i];
+        for (size_t j = 0; j < lst.size(); ++j){
+            if (k & (int)pow(2,j))
+                fout << lst[j]->getData()[i] << ",";
         }
         fout << '\n';
     }
