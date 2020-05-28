@@ -12,4 +12,5 @@ For Linux building:
 
 Enter these console commands if GL_Task_2 folder:
 >qmake
->make install
+>make
+>./GL_Task_2
