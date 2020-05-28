@@ -39,6 +39,8 @@ QVariant AdapterModel::data(const QModelIndex &index, int role) const
             return QString::fromStdString(item->getName());
         case DataRole:
             return var;
+        case MaxRole:
+            return item->getMax();
     }
 
     return QVariant{};
@@ -57,6 +59,8 @@ bool AdapterModel::setData(const QModelIndex &index, const QVariant &value, int 
             break;
         case DataRole:
             item->update();
+            break;
+        case MaxRole:
             break;
     }
 
@@ -83,6 +87,7 @@ QHash<int, QByteArray> AdapterModel::roleNames() const
     QHash<int, QByteArray> names;
     names[NameRole] = "name";
     names[DataRole] = "data";
+    names[MaxRole] = "max";
     return names;
 }
 

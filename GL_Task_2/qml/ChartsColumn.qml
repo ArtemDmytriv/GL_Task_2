@@ -67,41 +67,36 @@ Item{
                         width: chartBlock.width
                         height: chartBlock.height
 
+                        legend.visible : false
+
                         Connections {
                             target: adapterList
                             onItemUpdated: {
-                               console.log("In Decorator")
 
-                               for (var i = 0; i < model.data.size; ++i)
-                                    chartView.append(model.data[i]);
+                               console.log("ItemUpdated")
+                               var lst = model.data;
+
+                               lineSeries.append(lst.length - 1, lst[lst.length - 1]);
 
                                axisX.min = 0;
-                               axisX.max = 5;
+                               axisX.max = 100;
 
                                axisY.min = 0;
-                               axisY.max = 5;
+                               axisY.max = model.max;
                             }
                         }
 
                         LineSeries{
                             id: lineSeries
+                            axisX: axisX
+                            axisY: axisY
                         }
-
 
                         ValueAxis {
                             id: axisY
-                            gridVisible: true
-                            tickCount: 5
-                            min: 0
-                            max: 1
                         }
-
                         ValueAxis {
                             id: axisX
-                            min: 0
-                            max: 1
-                            gridVisible: true
-                            tickCount: 5
                         }
                     }
 

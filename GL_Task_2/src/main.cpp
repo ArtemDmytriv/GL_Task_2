@@ -17,6 +17,14 @@
 
 using namespace std;
 
+void funcThread(AdapterList* adap){
+    for (;;){
+        Sleep(1000);
+        if (adap)
+            adap->updateAllItems();
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -28,9 +36,13 @@ int main(int argc, char *argv[])
 
 
     UtilClass* ram = new RAMInfo;
+    ram->init();
     UtilClass* vram = new RAMInfo(hwType::VRAM);
+    vram->init();
     UtilClass* cpu = new CPUInfo;
+    cpu->init();
     UtilClass* netw = new NetworkInfo;
+    netw->init();
 
     AdapterList adapterList;
     adapterList.appendItem(cpu);
@@ -40,23 +52,17 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("adapterList", &adapterList);
-    //list.debugPrintData();
-    //    for(int i = 0; i < 5; i++){
-    //        Sleep(1000);
-    //        list.updateAllItems();
-    //    }
-    //list.debugPrintData();
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
         if (engine.rootObjects().isEmpty())
             return -1;
 
-    std::cout << "Wait For Update1\n";
+    std::thread th(funcThread, &adapterList);
 
-    for (int i = 0; i < 10; ++i){
-        Sleep(1000);
-        adapterList.updateAllItems();
-    }
+
     return app.exec();
+    th.join();
 }
+
+
 

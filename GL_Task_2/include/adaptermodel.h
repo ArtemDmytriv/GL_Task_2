@@ -15,7 +15,8 @@ public:
 
     enum {
         NameRole = Qt::UserRole,
-        DataRole
+        DataRole,
+        MaxRole
     };
 
     // Basic functionality:
