@@ -8,26 +8,26 @@ CPUCounter::CPUCounter(){
     std::ifstream fin ("/proc/stat");
     std::string temp;
     fin >> temp >> lastTotalUser
-     >> lastTotalUserLow 
-     >> lastTotalSys 
+     >> lastTotalUserLow
+     >> lastTotalSys
      >> lastTotalIdle;
-    
+
     fin.close();
 }
 
 double CPUCounter::getUsage(){
     double usage = 0;
-    
+
     unsigned long long totalUser, totalUserLow, totalSys, totalIdle, total;
 
     std::ifstream fin ("/proc/stat");
     std::string temp;
     fin >> temp >> totalUser
-     >> totalUserLow 
-     >> totalSys 
+     >> totalUserLow
+     >> totalSys
      >> totalIdle;
 
-    
+
     fin.close();
 
     if (totalUser < lastTotalUser || totalUserLow < lastTotalUserLow ||
@@ -41,7 +41,6 @@ double CPUCounter::getUsage(){
         usage = total;
         total += (totalIdle - lastTotalIdle);
         usage /= total;
-        usage *= 100;
     }
 
     lastTotalUser = totalUser;
