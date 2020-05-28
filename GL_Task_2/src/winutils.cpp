@@ -31,7 +31,7 @@ double CPUCounter::CalculateCPULoad(unsigned long long idleTicks, unsigned long 
 
 double CPUCounter::getUsage(){
    if (GetSystemTimes(&idleTime, &kernelTime, &userTime))
-       return CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime));
+       return CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime)) * 2;
    else
        return  -1.0;
 }
