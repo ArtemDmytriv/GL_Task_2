@@ -60,6 +60,7 @@ bool AdapterModel::setData(const QModelIndex &index, const QVariant &value, int 
     if (mList->setItemAt(index.row(), item)) {
         // FIXME: Implement me!
         emit dataChanged(index, index, QVector<int>() << role);
+        emit dataUpdated();
         return true;
     }
     return false;
@@ -101,7 +102,8 @@ void AdapterModel::setList(AdapterList *list)
         });
 
         connect(mList, &AdapterList::itemUpdated, this, [=]() {
-            std::cout <<"Data was updated" << std::endl;
+            std::cout <<"@FROM MODEL@>> Data was updated" << std::endl;
+            emit dataUpdated();
         });
     }
     endResetModel();

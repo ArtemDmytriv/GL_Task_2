@@ -33,10 +33,13 @@ int main(int argc, char *argv[])
     UtilClass* netw = new NetworkInfo;
 
     AdapterList adapterList;
-    adapterList.appendItem(ram);
-    adapterList.appendItem(vram);
     adapterList.appendItem(cpu);
+    adapterList.appendItem(ram);
+    adapterList.appendItem(vram);   
     adapterList.appendItem(netw);
+
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("adapterList", &adapterList);
 
     //list.debugPrintData();
     //    for(int i = 0; i < 5; i++){
@@ -45,12 +48,13 @@ int main(int argc, char *argv[])
     //    }
     //list.debugPrintData();
 
-    QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("adapterList", &adapterList);
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
         if (engine.rootObjects().isEmpty())
             return -1;
 
+    std::cout << "Wait For Update1\n";
+    Sleep(2000);
+    adapterList.updateAllItems();
 
     return app.exec();
 }

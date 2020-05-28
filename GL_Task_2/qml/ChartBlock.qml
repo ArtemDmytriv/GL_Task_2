@@ -5,7 +5,7 @@ import QtCharts 2.3
 
 
 Component{
-    id: delegate
+
     Rectangle {
         id: chartBlock
         color: "#fff6e2"
@@ -22,14 +22,45 @@ Component{
                 styleName: "Calibri"
                 pointSize: 10
             }
+            z: 2
         }
 
+        function add()
+        {
+            var line = myChart.createSeries(ChartView.SeriesTypeLine, "Line series", axisX, axisY);
 
+            line.append(model.data);
 
-    //    ChartView{
-    //        antialiasing: true
-    //        width: grid.width / 2 - globalMargin
-    //        height: grid.height / 3 - globalMargin
-    //    }
+            axisX.min = 0;
+            axisX.max = 5;
+
+            axisY.min = 0;
+            axisY.max = 5;
+        }
+
+        ChartView{
+
+            id: chartView
+            antialiasing: true
+            width: chartBlock.width
+            height: chartBlock.height
+
+            ValueAxis {
+                id: axisY
+                gridVisible: true
+                tickCount: 5
+                min: 0
+                max: 1
+            }
+
+            ValueAxis {
+                id: axisX
+                min: 0
+                max: 1
+                gridVisible: true
+                tickCount: 5
+            }
+        }
+
     }
 }

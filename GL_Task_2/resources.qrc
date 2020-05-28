@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/UtilityModel.qml</file>
         <file>qml/Background.qml</file>
         <file>qml/ChartsColumn.qml</file>
         <file>qml/ChartBlock.qml</file>
+        <file>qml/SaveField.qml</file>
     </qresource>
 </RCC>

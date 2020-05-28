@@ -9,7 +9,7 @@ class AdapterList;
 class AdapterModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(AdapterList *list READ list WRITE setList);
+    Q_PROPERTY(AdapterList *list READ list WRITE setList NOTIFY dataUpdated);
 public:
     explicit AdapterModel(QObject *parent = nullptr);
 
@@ -35,6 +35,9 @@ public:
     void setList(AdapterList *list);
 private:
     AdapterList * mList;
+public slots:
+signals:
+    void dataUpdated();
 };
 
 #endif // ADAPTERMODEL_H
