@@ -26,6 +26,7 @@ int AdapterList::getCount() const
     return mItems.size();
 }
 
+
 void AdapterList::debugPrintData() const
 {
     for (auto & elem : mItems){

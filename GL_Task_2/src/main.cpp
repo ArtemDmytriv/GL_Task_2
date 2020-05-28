@@ -52,9 +52,11 @@ int main(int argc, char *argv[])
             return -1;
 
     std::cout << "Wait For Update1\n";
-    Sleep(2000);
-    adapterList.updateAllItems();
 
+    for (int i = 0; i < 10; ++i){
+        Sleep(1000);
+        adapterList.updateAllItems();
+    }
     return app.exec();
 }
 

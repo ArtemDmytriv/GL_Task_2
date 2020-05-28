@@ -91,6 +91,25 @@ AdapterList *AdapterModel::list() const
     return mList;
 }
 
+void AdapterModel::saveToFile(QVariant savepath)
+{
+    std::cout << "start Save file\n";
+    std::string path = savepath.toString().toStdString();
+
+    std::ofstream fout(path + "data.txt");
+    fout << "CPU,RAM,VRAM,NETW\n";
+    std::vector<UtilClass*> lst = mList->items();
+
+    for (size_t i = 0; i < lst[0]->getData().size(); ++i){
+        for (size_t j = 0; j < lst.size(); ++j, fout << ','){
+            fout << lst[j]->getData()[i];
+        }
+        fout << '\n';
+    }
+    std::cout << "end Save file\n";
+    fout.close();
+}
+
 void AdapterModel::setList(AdapterList *list)
 {
     beginResetModel();

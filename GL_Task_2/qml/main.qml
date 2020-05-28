@@ -32,6 +32,11 @@ Window {
             id: saveField
         }
 
+        function saveProc(){
+            console.log("In save func");
+            my_model.saveToFile("");
+        }
+
         Item {
             id: lineSep
             visible:  true
@@ -42,6 +47,8 @@ Window {
                 anchors.fill: lineSep
             }
         }
+
+        property alias my_model: chartsItem.my_model
 
         ChartsColumn {
             id: chartsItem

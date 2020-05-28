@@ -5,8 +5,7 @@ import QtCharts 2.3
 import MyModel 1.0
 
 Item{
-    id: chartsItem
-
+    property alias my_model: backgroundCharts.my_model
 
     Rectangle{
         id: backgroundCharts
@@ -14,6 +13,7 @@ Item{
         anchors.fill : chartsItem
         color: "#F4EBD9"
 
+        property alias my_model: grid.model
 
         GridView{
             signal updateGraphs
@@ -70,7 +70,7 @@ Item{
                         Connections {
                             target: adapterList
                             onItemUpdated: {
-                               console.log("In Decorator" + model.data.size.toFixe)
+                               console.log("In Decorator")
 
                                for (var i = 0; i < model.data.size; ++i)
                                     chartView.append(model.data[i]);

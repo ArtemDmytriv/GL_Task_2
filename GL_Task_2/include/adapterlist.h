@@ -25,7 +25,6 @@ signals:
 public slots:
     void appendItem(UtilClass *item);
     void updateAllItems();
-    //void saveToFile(std::fstream fin);
 
 private:
     std::vector<UtilClass*> mItems;

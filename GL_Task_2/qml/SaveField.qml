@@ -12,15 +12,22 @@ Item {
         color: "#F4EBD9"
         anchors.fill: saveField
     }
+
+
     Row{
         anchors.fill: saveField
         anchors.margins: globalMargin
         spacing: globalMargin
+
         function changeText() {
             pauseButton.buttontext = (pauseButton.state)? "start" : "pause"
             pauseButton.state = !pauseButton.state
         }
-        
+
+        Connections {
+            target: adapterList
+        }
+
         Button{
             id: pauseButton
             property bool state: true
@@ -66,6 +73,22 @@ Item {
             width: 10
             color: "#584D44"
         }
+
+        Button{
+            id: saveButton
+            property bool state: true
+            property string buttontext: "save"
+
+            height: parent.height
+            text: buttontext
+
+            anchors.verticalCenter: parent.Center
+            palette{
+                button : "#BACCBC"
+            }
+            onClicked: elements.saveProc();
+        }
+
 
     }
 }

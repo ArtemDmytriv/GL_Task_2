@@ -33,6 +33,9 @@ public:
 
     AdapterList *list() const;
     void setList(AdapterList *list);
+
+    Q_INVOKABLE void saveToFile(QVariant path);
+
 private:
     AdapterList * mList;
 public slots:
