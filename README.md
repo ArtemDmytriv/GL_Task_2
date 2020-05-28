@@ -10,12 +10,14 @@ qml-module-qtcharts
 
 For Linux building:
 Enter these console commands if GL_Task_2 folder:
->qmake
->make
->./GL_Task_2
+qmake
+make
+./GL_Task_2
 
 For Windows building:
 Enter these console commands if GL_Task_2 folder:
->qmake
->make
->./GL_Task_2.exe
+qmake
+make
+./GL_Task_2.exe
+
+File saving into build folder into data.txt file
