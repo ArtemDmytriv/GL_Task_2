@@ -30,8 +30,8 @@ public:
     double getTotalVRamMB();
 private:
     struct sysinfo memInfo;
-    long long totalPhysMem;
-    long long totalVirtualMem;
+    double totalPhysMem;
+    double totalVirtualMem;
 };
 
 class NetworkCounter{
