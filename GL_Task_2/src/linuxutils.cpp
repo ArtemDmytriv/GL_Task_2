@@ -126,6 +126,13 @@ double RAMCounter::getVRamUsage(){
 
 // NETWORK
 
+NetworkCounter::NetworkCounter(){
+
+}
+
+double NetworkCounter::getUsage(){
+    return getSpeed();
+}
 
 double NetworkCounter::getSpeed(){
     std::string interface = "eth0";
@@ -146,6 +153,10 @@ double NetworkCounter::getSpeed(){
         return std::stoi(output) / KB;
     }
     return 0;
+}
+
+double NetworkCounter::getLastMaximum(){
+    return 50.0;
 }
 
 
