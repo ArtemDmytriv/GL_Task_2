@@ -48,14 +48,36 @@ Item{
                     height: grid.cellHeight - globalMargin * 2
                     border.color: Qt.darker("#fff6e2", 1.5)
                     border.width: 2
+                    property real last : 0
 
-                    Text{
+                    Item{
                         anchors.left: parent.left
                         anchors.leftMargin: globalMargin
-                        text: model.name
-                        font{
-                            styleName: "Calibri"
-                            pointSize: 10
+                        Text{
+                            anchors.fill: parent
+                            text: model.name
+                            font{
+                                styleName: "Calibri"
+                                pointSize: 10
+                            }
+
+                        }
+                        z: 2
+                    }
+
+                    Item {
+                        anchors.right: parent.right
+                        anchors.rightMargin:  globalMargin *4
+                        Text{
+                            color: Qt.darker("Green", 1.5)
+                            anchors.fill: parent
+                            text: ((last / model.max).toFixed(2) * 100).toString() + "%"
+                            font{
+                                bold: true
+                                styleName: "Light Calibri"
+                                pointSize: 10
+                            }
+
                         }
                         z: 2
                     }
@@ -73,28 +95,37 @@ Item{
                             target: adapterList
                             onItemUpdated: {
 
-                               console.log("ItemUpdated")
+                               //console.log("ItemUpdated")
                                var lst = model.data;
 
                                lineSeries.append(lst.length - 1, lst[lst.length - 1]);
+                               elements.curTime = lst.length - 1
+                               chartBlock.last = lst[lst.length - 1]
 
-                               axisX.min = 0;
-                               axisX.max = 100;
+                               axisX.min = elements.curTime - 20;
+                               axisX.max = elements.curTime * 1.05;
 
                                axisY.min = 0;
                                axisY.max = model.max;
                             }
                         }
 
-                        LineSeries{
-                            id: lineSeries
+                        AreaSeries{
+                            id: areaSeries
                             axisX: axisX
                             axisY: axisY
+                            color: "#8EA8C3"
+                            borderWidth: 2
+                            borderColor: Qt.darker(color, 2)
+                            upperSeries: LineSeries{
+                                id: lineSeries
+                            }
                         }
 
                         ValueAxis {
                             id: axisY
                         }
+
                         ValueAxis {
                             id: axisX
                         }

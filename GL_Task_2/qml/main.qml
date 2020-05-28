@@ -31,6 +31,8 @@ Window {
         SaveField {
             id: saveField
         }
+        property int curTime: 0
+        property int saveStates: 0
 
         function saveProc(){
             console.log("In save func");

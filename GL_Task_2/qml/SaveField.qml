@@ -32,10 +32,10 @@ Item {
             id: pauseButton
             property bool state: true
             property string buttontext: "pause"
-            
+
             height: parent.height
             text: buttontext
-            
+
             anchors.verticalCenter: parent.Center
             palette{
                 button : "#BACCBC"
@@ -53,18 +53,50 @@ Item {
         CheckBox{
             anchors.leftMargin: globalMargin*2
             text: "CPU"
+            onCheckedChanged: {
+                if (checkState === Qt.Checked){
+                    elements.saveStates = elements.saveStates | 1
+                }
+                else{
+                    elements.saveStates = elements.saveStates & 14
+                }
+            }
         }
         CheckBox{
             anchors.leftMargin: globalMargin*2
             text: "RAM"
+            onCheckedChanged: {
+                if (checkState === Qt.Checked){
+                    elements.saveStates = elements.saveStates | 2
+                }
+                else{
+                    elements.saveStates = elements.saveStates & 13
+                }
+            }
         }
         CheckBox{
             anchors.leftMargin: globalMargin*2
             text: "VRAM"
+            onCheckedChanged: {
+                if (checkState == Qt.Checked){
+                    elements.saveStates = elements.saveStates | 4
+                }
+                else{
+                    elements.saveStates = elements.saveStates & 11
+                }
+            }
         }
         CheckBox{
             anchors.leftMargin: globalMargin*2
             text: "NETW"
+            onCheckedChanged: {
+                if (checkState == Qt.Checked){
+                    elements.saveStates = elements.saveStates | 8
+                }
+                else{
+                    elements.saveStates = elements.saveStates & 7
+                }
+            }
         }
 
         Rectangle{
@@ -86,7 +118,32 @@ Item {
             palette{
                 button : "#BACCBC"
             }
-            onClicked: elements.saveProc();
+            onClicked: {
+                console.log(elements.saveStates)
+                elements.saveProc();
+            }
+        }
+        Column{
+            id: sliderCol
+            height: parent.height
+
+            Slider{
+
+                id: slider
+                snapMode: "SnapAlways"
+                stepSize: 1
+                from: 1
+                to: elements.curTime
+                onValueChanged: {
+                    sliderText.text = value.toString() + " seconds"
+                }
+
+            }
+            Text{
+                id: sliderText
+                text: "0" + " seconds"
+            }
+
         }
 
 
