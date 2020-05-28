@@ -17,9 +17,17 @@
 
 using namespace std;
 
+void mySleep(int ms){
+#ifdef _WIN32
+Sleep(ms);
+#elif _linux_
+sleep(ms/1000);
+#endif
+}
+
 void funcThread(AdapterList* adap){
     for (;;){
-        Sleep(1000);
+        mySleep(1000);
         if (adap)
             adap->updateAllItems();
     }
