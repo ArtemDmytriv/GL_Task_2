@@ -27,7 +27,12 @@ std::vector<double> UtilClass::getData() const
     return data;
 }
 
-double UtilClass::getMax() const
+double UtilClass::getMax()
 {
-    return maxval;
+    if (type == hwType::NETW){
+        return this->getFull();
+    }
+    else{
+        return maxval;
+    }
 }

@@ -25,7 +25,7 @@ public:
 
     hwType getType() const;
     std::vector<double> getData() const;
-    double getMax() const;
+    double getMax();
 private:
     hwType type = hwType::NONE;
     double maxval;

@@ -168,6 +168,8 @@ NetworkCounter::NetworkCounter()
 {
     PdhOpenQuery(0, 0, &hquery) == ERROR_SUCCESS || (hquery = 0);
 
+    lastMaximum = 0.0;
+
     std::string name = "Network Interface";
     object_name = name;
     auto counter_names = ListCounters(name);
@@ -218,8 +220,6 @@ double NetworkCounter::getUsage()
         return 0.0;
     }
     for (const auto& counter : counter_list) {
-        const std::string spaces(max_name_len - counter.name.length() + 2, ' ');
-        std::cout << counter.name << spaces;
         DWORD counter_type;
         PDH_FMT_COUNTERVALUE fmt_value = { 0 };
         auto status = PdhGetFormattedCounterValue(counter.hcounter, PDH_FMT_DOUBLE, &counter_type, &fmt_value);
@@ -231,7 +231,10 @@ double NetworkCounter::getUsage()
             std::cout << "CounterPollingDump: PdhGetFormattedCounterValue failed: " << std::hex << status << '\n';
             return 0.0;
         }
-        cout << fmt_value.doubleValue << endl;
+
+        if (lastMaximum < fmt_value.doubleValue){
+            lastMaximum = fmt_value.doubleValue;
+        }
         return fmt_value.doubleValue;
     }
     return 0.0;
@@ -239,7 +242,7 @@ double NetworkCounter::getUsage()
 
 double NetworkCounter::getSpeed()
 {
-    return 21.21;
+    return 0.0;
 }
 
 string NetworkCounter::getName()
@@ -249,7 +252,7 @@ string NetworkCounter::getName()
 
 double NetworkCounter::getLastMaximum()
 {
-    return 5* MB;
+    return lastMaximum;
 }
 
 // NETW IMPLEMENTATION
