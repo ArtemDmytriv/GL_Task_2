@@ -5,9 +5,9 @@ import QtQuick.Controls 2.12
 
 Window {
     id: root
-    width: 900
+    width: 1200
     height: 600
-    minimumWidth: 450
+    minimumWidth: 600
     minimumHeight: 300
 
     visible: true

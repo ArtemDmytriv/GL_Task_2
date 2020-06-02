@@ -41,7 +41,6 @@ Item{
             Component{
                 id: delegate
                 Rectangle {
-
                     id: chartBlock
                     color: "#fff6e2"
                     width: grid.cellWidth - globalMargin
@@ -67,11 +66,11 @@ Item{
 
                     Item {
                         anchors.right: parent.right
-                        anchors.rightMargin:  globalMargin *4
+                        anchors.rightMargin: (Boolean(model.type))? globalMargin * 8 : globalMargin * 12
                         Text{
                             color: Qt.darker("Green", 1.5)
                             anchors.fill: parent
-                            text: ((last / model.max).toFixed(2) * 100).toString() + "%"
+                            text: (Boolean(model.type))? ((last / model.max) * 100).toFixed(2).toString() + "%": last.toFixed(2).toString() + "b/s"
                             font{
                                 bold: true
                                 styleName: "Light Calibri"
