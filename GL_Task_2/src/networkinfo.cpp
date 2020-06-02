@@ -18,7 +18,7 @@ double NetworkInfo::getFull()
 
 std::string NetworkInfo::getName()
 {
-    return "Ethernet";
+    return drv->getName();
 }
 
 double NetworkInfo::getSpeed()

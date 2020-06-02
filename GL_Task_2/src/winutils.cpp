@@ -107,14 +107,134 @@ double RAMCounter::getVRamUsage(){
     return (totalVirtualMem - memInfo.ullAvailPageFile) / MB;
 }
 
+// NETWORK
+using namespace std;
+using namelist_t = std::vector<std::string>;
+
+struct CounterNames { namelist_t counters, instances; };
+
+static namelist_t NameListParser() { return namelist_t(); }
+
+static namelist_t NameListParser(const std::string& buffer) {
+    namelist_t names;
+    auto iter = buffer.begin();
+    do {
+        std::string name;
+        while (iter != buffer.end() && *iter) {
+            name += *(iter++);
+        }
+        if (!name.empty()) {
+            names.push_back(name);
+        }
+    } while (iter != buffer.end() && ++iter != buffer.end() && *iter);
+    return names;
+}
+
+static CounterNames ListCounters(const std::string& object_name) {
+    DWORD counter_list_size = 0;
+    DWORD instance_list_size = 0;
+    const DWORD detail_level = PERF_DETAIL_WIZARD;
+    PdhEnumObjectItemsA(0, 0, object_name.c_str(), 0, &counter_list_size, 0, &instance_list_size, detail_level, 0);
+    std::string counter_buf(counter_list_size, '\0');
+    std::string inst_buf(instance_list_size, '\0');
+    auto status = PdhEnumObjectItemsA(0, 0, object_name.c_str(), &counter_buf[0], &counter_list_size, &inst_buf[0], &instance_list_size, detail_level, 0);
+    if (status != ERROR_SUCCESS) {
+        return CounterNames();
+    }
+
+    auto counters = NameListParser(counter_buf);
+    auto instances = NameListParser(inst_buf);
+
+    return { counters, instances };
+}
+
+static std::string CounterPath(std::string object_name, std::string counter_name, std::string instance_name) {
+    PDH_COUNTER_PATH_ELEMENTS_A path_elements = { 0 };
+    path_elements.szObjectName = &object_name[0];
+    path_elements.szCounterName = &counter_name[0];
+    path_elements.szInstanceName = &instance_name[0];
+    std::string path(PDH_MAX_COUNTER_PATH + 1, '\0');
+    DWORD len = PDH_MAX_COUNTER_PATH;
+    auto status = PdhMakeCounterPathA(&path_elements, &path[0], &len, 0);
+    if (status != ERROR_SUCCESS) {
+        std::cout << std::hex << status << '\n';
+        return std::string("Error");
+    }
+    path.resize(len - (path[len - 1] == '\0'));
+    return path;
+}
+
 NetworkCounter::NetworkCounter()
 {
-    lastMaximum = 50;
+    PdhOpenQuery(0, 0, &hquery) == ERROR_SUCCESS || (hquery = 0);
+
+    std::string name = "Network Interface";
+    object_name = name;
+    auto counter_names = ListCounters(name);
+    if (counter_names.instances.size()) {
+        std::cout << "Automatically selecting instance \"" << counter_names.instances[0] << "\"\n";
+        instance_name = counter_names.instances[0];
+    }
+
+    if (!hquery) {
+        std::cout << "AddCounter: Query was not successfully created\n";
+        return;
+    }
+    if (object_name.empty()) {
+        std::cout << "AddCounter: No Object Name selected\n";
+        return;
+    }
+    if (instance_name.empty()) {
+        std::cout << "AddCounter: No Instance Name selected\n";
+        return;
+    }
+
+    CounterData counter_data;
+    name = "Bytes Received/sec";
+    counter_data.name = name;
+    counter_data.path = CounterPath(object_name, name, instance_name);
+    auto status = PdhAddCounterA(hquery, counter_data.path.c_str(), 0, &counter_data.hcounter);
+    if (status != ERROR_SUCCESS) {
+        std::cout << "AddCounter Failed: " << std::hex << status << '\n';
+        return;
+    }
+    counter_list.push_back(counter_data);
 }
 
 double NetworkCounter::getUsage()
 {
-    return 21.21;
+    if (counter_list.empty()) {
+        std::cout << "CounterPollingDump: Nothing to do, the Counter List is empty\n";
+        return 0.0;
+    }
+    size_t max_name_len = 0;
+    for (const auto& counter : counter_list) {
+        if (counter.name.length() > max_name_len) max_name_len = counter.name.length();
+    }
+
+    auto status = PdhCollectQueryData(hquery);
+    if (status != ERROR_SUCCESS) {
+        std::cout << "CounterPollingDump: PdhCollectQueryData failed: " << std::hex << status << '\n';
+        return 0.0;
+    }
+    for (const auto& counter : counter_list) {
+        const std::string spaces(max_name_len - counter.name.length() + 2, ' ');
+        std::cout << counter.name << spaces;
+        DWORD counter_type;
+        PDH_FMT_COUNTERVALUE fmt_value = { 0 };
+        auto status = PdhGetFormattedCounterValue(counter.hcounter, PDH_FMT_DOUBLE, &counter_type, &fmt_value);
+        if (status != ERROR_SUCCESS) {
+            if (status == PDH_INVALID_DATA) {
+                std::cout << " -- no data --\n";
+                continue;
+            }
+            std::cout << "CounterPollingDump: PdhGetFormattedCounterValue failed: " << std::hex << status << '\n';
+            return 0.0;
+        }
+        cout << fmt_value.doubleValue << endl;
+        return fmt_value.doubleValue;
+    }
+    return 0.0;
 }
 
 double NetworkCounter::getSpeed()
@@ -122,9 +242,14 @@ double NetworkCounter::getSpeed()
     return 21.21;
 }
 
+string NetworkCounter::getName()
+{
+    return instance_name;
+}
+
 double NetworkCounter::getLastMaximum()
 {
-    return lastMaximum;
+    return 5* MB;
 }
 
 // NETW IMPLEMENTATION

@@ -41,9 +41,23 @@ public:
     NetworkCounter();
     double getUsage();
     double getSpeed();
+    std::string getName();
     double getLastMaximum();
 private:
     double lastMaximum;
+
+    struct CounterData {
+        PDH_HCOUNTER hcounter;
+        std::string  name;
+        std::string  path;
+    };
+
+    PDH_HQUERY               hquery;
+    std::vector<CounterData> counter_list;
+    std::string              object_name;
+    std::string              instance_name;
+
+    volatile bool keep_going;
 };
 
 }
