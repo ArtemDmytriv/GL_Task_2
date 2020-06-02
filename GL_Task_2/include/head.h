@@ -29,6 +29,8 @@ enum class hwType{ CPU, RAM, VRAM, NETW, GPU, NONE};
 #define TIME 1000 /* ms */
 #include "windows.h"
 #include "intrin.h"
+#include "pdh.h"
+#include "pdhmsg.h"
 #include "include/winutils.h"
 using namespace win_impl;
 
