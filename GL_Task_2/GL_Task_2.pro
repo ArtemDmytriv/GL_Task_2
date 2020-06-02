@@ -41,6 +41,7 @@ FORMS +=
 win32:{
     HEADERS += include/winutils.h
     SOURCES += src/winutils.cpp
+    LIBS += -lPdh
 } else {
     HEADERS += include/linuxutil.h
     SOURCES += src/linuxutils.cpp
