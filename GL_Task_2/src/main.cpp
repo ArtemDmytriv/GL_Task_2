@@ -10,8 +10,9 @@
 
 //#include <QIcon>
 #include <QtCore>
+#include <QQuickItem>
 #include <QApplication>
-#include <QQmlComponent>
+#include <QQmlProperty>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
@@ -19,16 +20,16 @@ using namespace std;
 
 void mySleep(int ms){
 #ifdef _WIN32
-Sleep(ms);
+    Sleep(ms);
 #elif __linux__
-sleep(ms/1000);
+    sleep(ms/1000);
 #endif
 }
 
-void funcThread(AdapterList* adap){
+void funcThread(QObject* elems, AdapterList* adap){
     for (;;){
         mySleep(1000);
-        if (adap)
+        if (QQmlProperty::read(elems, "isRun").toBool() && adap)
             adap->updateAllItems();
     }
 }
@@ -55,17 +56,22 @@ int main(int argc, char *argv[])
     AdapterList adapterList;
     adapterList.appendItem(cpu);
     adapterList.appendItem(ram);
-    adapterList.appendItem(vram);   
+    adapterList.appendItem(vram);
     adapterList.appendItem(netw);
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("adapterList", &adapterList);
 
-    engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
-        if (engine.rootObjects().isEmpty())
-            return -1;
+//    engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+//    if (engine.rootObjects().isEmpty())
+//        return -1;
 
-    std::thread th(funcThread, &adapterList);
+
+    QQmlComponent comp(&engine, QUrl("qrc:/qml/main.qml"));
+    QObject* pobj = comp.create();
+    QObject* elems = pobj->findChild<QObject*>("elementsObj");
+
+    std::thread th(funcThread, elems, &adapterList);
 
 
     return app.exec();
