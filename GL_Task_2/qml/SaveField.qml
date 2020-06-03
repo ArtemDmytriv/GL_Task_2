@@ -40,7 +40,10 @@ Item {
             palette{
                 button : "#BACCBC"
             }
-            onClicked: parent.changeText();
+            onClicked: {
+                parent.changeText();
+                elements.isRun = !elements.isRun;
+            }
         }
 
         Rectangle{

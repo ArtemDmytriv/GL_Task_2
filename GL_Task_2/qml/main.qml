@@ -31,6 +31,8 @@ Window {
         SaveField {
             id: saveField
         }
+
+        property bool isRun: true
         property int curTime: 0
         property int saveStates: 0
 
