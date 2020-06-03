@@ -31,6 +31,7 @@ qtdeclarative5-dev
 libqt5charts5-dev
 qml-module-qtcharts
 
+<<<<<<< HEAD
 For Linux building (Probably dont work):
 Enter these console commands in GL_Task_2 folder:
 qmake
@@ -44,3 +45,18 @@ Enter these console commands in GL_Task_2 folder:
 >./GL_Task_2.exe
 
 //
+=======
+For Linux building:
+Enter these console commands if GL_Task_2 folder:
+qmake
+make
+./GL_Task_2
+
+For Windows building:
+Enter these console commands if GL_Task_2 folder:
+qmake
+make
+./GL_Task_2.exe
+
+File saving into build folder into data.txt file
+>>>>>>> aaa711d0003a952f3881f0eba0946115eb947139
