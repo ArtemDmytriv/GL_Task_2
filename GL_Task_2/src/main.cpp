@@ -66,13 +66,11 @@ int main(int argc, char *argv[])
 //    if (engine.rootObjects().isEmpty())
 //        return -1;
 
-
     QQmlComponent comp(&engine, QUrl("qrc:/qml/main.qml"));
     QObject* pobj = comp.create();
     QObject* elems = pobj->findChild<QObject*>("elementsObj");
 
     std::thread th(funcThread, elems, &adapterList);
-
 
     return app.exec();
     th.join();

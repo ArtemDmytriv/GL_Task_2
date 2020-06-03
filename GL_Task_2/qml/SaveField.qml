@@ -17,15 +17,11 @@ Item {
     Row{
         anchors.fill: saveField
         anchors.margins: globalMargin
-        spacing: globalMargin
+        spacing: globalMargin * 2
 
         function changeText() {
             pauseButton.buttontext = (pauseButton.state)? "start" : "pause"
             pauseButton.state = !pauseButton.state
-        }
-
-        Connections {
-            target: adapterList
         }
 
         Button{
@@ -48,7 +44,7 @@ Item {
 
         Rectangle{
             visible:  true
-            height:  parent.height
+            height: parent.height
             width: 10
             color: "#584D44"
         }
@@ -104,7 +100,7 @@ Item {
 
         Rectangle{
             visible:  true
-            height:  parent.height
+            height: parent.height
             width: 10
             color: "#584D44"
         }

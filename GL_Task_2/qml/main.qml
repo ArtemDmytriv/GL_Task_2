@@ -7,8 +7,8 @@ Window {
     id: root
     width: 1200
     height: 600
-    minimumWidth: 600
-    minimumHeight: 300
+    minimumWidth: 900
+    minimumHeight: 400
 
     visible: true
     title: "Loadability manager"
