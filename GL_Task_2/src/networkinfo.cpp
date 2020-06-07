@@ -1,9 +1,9 @@
 #include "networkinfo.h"
 
 
-NetworkInfo::NetworkInfo() : UtilClass(hwType::NETW)
+NetworkInfo::NetworkInfo(netwType t) : UtilClass(hwType::NETW), mNetwType(t)
 {
-    drv = new NetworkCounter;
+    drv = new NetworkCounter(t);
 }
 
 double NetworkInfo::getUsage()

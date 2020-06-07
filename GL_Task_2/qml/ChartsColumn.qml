@@ -70,7 +70,7 @@ Item{
                         Text{
                             color: Qt.darker("Green", 1.5)
                             anchors.fill: parent
-                            text: (Boolean(model.type))? ((last / model.max) * 100).toFixed(2).toString() + "%": last.toFixed(2).toString() + "b/s"
+                            text: (Boolean(model.type))? ((last / model.max) * 100).toFixed(2).toString() + "%": last.toFixed(2).toString() + "kb/s"
                             font{
                                 bold: true
                                 styleName: "Light Calibri"
@@ -102,7 +102,7 @@ Item{
                                chartBlock.last = lst[lst.length - 1]
 
                                axisX.min = elements.curTime - 20;
-                               axisX.max = elements.curTime * 1.05;
+                               axisX.max = elements.curTime;
 
                                axisY.min = 0;
                                axisY.max = model.max;

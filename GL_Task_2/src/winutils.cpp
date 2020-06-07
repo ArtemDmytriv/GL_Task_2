@@ -31,7 +31,7 @@ double CPUCounter::CalculateCPULoad(unsigned long long idleTicks, unsigned long 
 
 double CPUCounter::getUsage(){
    if (GetSystemTimes(&idleTime, &kernelTime, &userTime))
-       return CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime)) * 2;
+       return CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime)+FileTimeToInt64(userTime));
    else
        return  -1.0;
 }
@@ -164,7 +164,7 @@ static std::string CounterPath(std::string object_name, std::string counter_name
     return path;
 }
 
-NetworkCounter::NetworkCounter()
+NetworkCounter::NetworkCounter(netwType t) : mnetwType(t)
 {
     PdhOpenQuery(0, 0, &hquery) == ERROR_SUCCESS || (hquery = 0);
 
@@ -174,8 +174,8 @@ NetworkCounter::NetworkCounter()
     object_name = name;
     auto counter_names = ListCounters(name);
     if (counter_names.instances.size()) {
-        std::cout << "Automatically selecting instance \"" << counter_names.instances[0] << "\"\n";
-        instance_name = counter_names.instances[0];
+        std::cout << "Automatically selecting instance \"" << counter_names.instances[static_cast<int>(mnetwType)] << "\"\n";
+        instance_name = counter_names.instances[static_cast<int>(mnetwType)];
     }
 
     if (!hquery) {
@@ -235,7 +235,7 @@ double NetworkCounter::getUsage()
         if (lastMaximum < fmt_value.doubleValue){
             lastMaximum = fmt_value.doubleValue;
         }
-        return fmt_value.doubleValue;
+        return fmt_value.doubleValue / KB;
     }
     return 0.0;
 }
@@ -252,7 +252,7 @@ string NetworkCounter::getName()
 
 double NetworkCounter::getLastMaximum()
 {
-    return lastMaximum;
+    return lastMaximum / KB;
 }
 
 // NETW IMPLEMENTATION

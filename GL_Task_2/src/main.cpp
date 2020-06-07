@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     vram->init();
     UtilClass* cpu = new CPUInfo;
     cpu->init();
-    UtilClass* netw = new NetworkInfo;
+    UtilClass* netw = new NetworkInfo(netwType::WIFI);
     netw->init();
 
     AdapterList adapterList;

@@ -38,14 +38,14 @@ private:
 
 class NetworkCounter{
 public:
-    NetworkCounter();
+    NetworkCounter(netwType t = netwType::ETH);
     double getUsage();
     double getSpeed();
     std::string getName();
     double getLastMaximum();
 private:
     double lastMaximum;
-
+    netwType mnetwType;
     struct CounterData {
         PDH_HCOUNTER hcounter;
         std::string  name;

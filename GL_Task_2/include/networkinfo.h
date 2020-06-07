@@ -6,7 +6,9 @@
 
 class NetworkInfo : public UtilClass{
 public:
-    NetworkInfo();
+    netwType mNetwType;
+
+    NetworkInfo(netwType t = netwType::ETH);
 
     double getUsage() override;
     double getFull() override;
@@ -16,6 +18,7 @@ public:
 
     ~NetworkInfo();
 private:
+
     NetworkCounter *drv;
     double LastMax;
 };

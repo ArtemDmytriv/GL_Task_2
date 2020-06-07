@@ -20,7 +20,7 @@ const int KB = 1024 ; // bits in KB;
 namespace win_impl {}
 namespace linux_impl {}
 enum class hwType{ CPU, RAM, VRAM, NETW, GPU, NONE};
-
+enum class netwType{ ETH, WIFI };
 
 // defines
 #define PAUSE 1000 /* miliseconds */
