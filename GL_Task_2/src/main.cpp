@@ -50,7 +50,9 @@ int main(int argc, char *argv[])
     vram->init();
     UtilClass* cpu = new CPUInfo;
     cpu->init();
-    UtilClass* netw = new NetworkInfo(netwType::WIFI);
+    UtilClass* netw = new NetworkInfo(netwType::ETH);
+    netw->init();
+    UtilClass* netwWifi = new NetworkInfo(netwType::WIFI);
     netw->init();
 
     AdapterList adapterList;
@@ -58,6 +60,7 @@ int main(int argc, char *argv[])
     adapterList.appendItem(ram);
     adapterList.appendItem(vram);
     adapterList.appendItem(netw);
+     adapterList.appendItem(netwWifi);
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("adapterList", &adapterList);

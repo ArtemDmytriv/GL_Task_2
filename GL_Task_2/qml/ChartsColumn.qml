@@ -22,7 +22,7 @@ Item{
             id: grid
             objectName: "gridObj"
             cellWidth: backgroundCharts.width / 2 - globalMargin
-            cellHeight: backgroundCharts.height / 2 - globalMargin
+            cellHeight: backgroundCharts.height / 3 - globalMargin
 
             anchors.fill : backgroundCharts
             anchors.margins: globalMargin
