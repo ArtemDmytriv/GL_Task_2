@@ -101,11 +101,11 @@ Item{
                                elements.curTime = lst.length - 1
                                chartBlock.last = lst[lst.length - 1]
 
-                               axisX.min = elements.curTime - 20;
+                               axisX.min = elements.curTime - 40;
                                axisX.max = elements.curTime;
 
                                axisY.min = 0;
-                               axisY.max = model.max;
+                               axisY.max = Math.round(model.max);
                             }
                         }
 

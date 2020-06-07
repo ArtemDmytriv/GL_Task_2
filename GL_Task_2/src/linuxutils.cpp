@@ -91,41 +91,40 @@ std::string CPUCounter::getProcName() const{
 
 RAMCounter::RAMCounter(){
     sysinfo (&memInfo);
+
+    totalPhysMem = memInfo.totalram;
+    totalPhysMem *= memInfo.mem_unit;
+
+    totalVirtualMem = memInfo.totalram;
+    totalVirtualMem += memInfo.totalswap;
+    totalVirtualMem *= memInfo.mem_unit;
 }
 
 double RAMCounter::getTotalMB(){
-    totalPhysMem = memInfo.totalram;
-    totalPhysMem *= memInfo.mem_unit;
-    return static_cast<double> (totalPhysMem);
+    return static_cast<double> (totalPhysMem) / MB;;
 }
 
 
 double RAMCounter::getUsage(){
     long long physMemUsed = totalPhysMem - memInfo.freeram;
     physMemUsed *= memInfo.mem_unit;
-    return static_cast<double> (physMemUsed) / totalPhysMem;
+    return static_cast<double> (physMemUsed) / MB;
 }
 
 double RAMCounter::getTotalVRamMB(){
-
-    totalVirtualMem = memInfo.totalram;
-    //Add other values in next statement to avoid int overflow on right hand side...
-    totalVirtualMem += memInfo.totalswap;
-    totalVirtualMem *= memInfo.mem_unit;
-
-    return static_cast<double> (totalVirtualMem);
+    return static_cast<double> (totalVirtualMem) / MB;
 }
 
 double RAMCounter::getVRamUsage(){
     long long virtualMemUsed = totalVirtualMem - memInfo.freeram;
     virtualMemUsed += memInfo.totalswap - memInfo.freeswap;
     virtualMemUsed *= memInfo.mem_unit;
-    return static_cast<double> (virtualMemUsed) / totalVirtualMem;
+    return static_cast<double> (virtualMemUsed) / MB;
 }
 
 // NETWORK
 
-NetworkCounter::NetworkCounter(){
+NetworkCounter::NetworkCounter(netwType t) : mnetwType(t){
 
 }
 
@@ -134,7 +133,7 @@ double NetworkCounter::getUsage(){
 }
 
 double NetworkCounter::getSpeed(){
-    std::string interface = "eth0";
+    std::string interface = (mnetwType == netwType::ETH)? "eth0" : "lo";
     std::ifstream net_work_monitor(std::string("/sys/class/net/"  + interface + "/") );
 
     if (net_work_monitor.good() == 1){
@@ -149,14 +148,21 @@ double NetworkCounter::getSpeed(){
         net_work_monitor.close();
         network_speed_check.close();
 
-        return std::stoi(output) / KB;
+        auto speed = std::stoi(output);
+        if (lastMaximum < speed){
+            lastMaximum = speed;
+        }
+        return speed / KB;
     }
     return 0;
 }
 
 double NetworkCounter::getLastMaximum(){
-    return 50.0;
+    return lastMaximum / KB;
 }
 
+std::string NetworkCounter::getName(){
+    return (mnetwType == netwType::ETH)? "eth0" : "lo";
+}
 
 }

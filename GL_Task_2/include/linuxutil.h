@@ -30,17 +30,19 @@ public:
     double getTotalVRamMB();
 private:
     struct sysinfo memInfo;
-    double totalPhysMem;
-    double totalVirtualMem;
+    long long totalPhysMem;
+    long long totalVirtualMem;
 };
 
 class NetworkCounter{
 public:
-    NetworkCounter();
+    NetworkCounter(netwType t = netwType::ETH);
     double getUsage();
     double getSpeed();
     double getLastMaximum();
+    std::string getName();
 private:
+    netwType mnetwType;
     double lastMaximum;
 };
 
